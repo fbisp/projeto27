@@ -158,8 +158,11 @@
 
     <!-- BOTÃO REVELAÇÃO -->
     <div style="text-align:center; margin:2rem 0;">
-      <button id="revealBtn" class="poll-btn" style="font-size:1.1rem; padding:1.25rem 3rem; background:linear-gradient(135deg,#ff6b9d,#c44569); border:none;" onclick="reveal()">
-        🚀 CLIQUEM AQUI PRA DESCOBRIR!
+      <p id="progressoAviso" style="color:#8892b0; margin-bottom:1rem; font-size:.95rem;">
+        👉 Responda as 4 perguntas acima pra liberar o botão da surpresa! (<span id="progressoContador">0</span>/4)
+      </p>
+      <button id="revealBtn" class="poll-btn" disabled style="font-size:1.1rem; padding:1.25rem 3rem; background:#444; border:none; opacity:.6; cursor:not-allowed;" onclick="reveal()">
+        🔒 RESPONDA AS PERGUNTAS PRIMEIRO
       </button>
     </div>
 
@@ -188,6 +191,24 @@
   </div>
 
   <script>
+    // Controle de progresso: guarda quais perguntas já foram acertadas
+    const acertadas = { 1: false, 2: false, 3: false, 4: false };
+
+    function atualizarProgresso() {
+      const total = Object.values(acertadas).filter(Boolean).length;
+      document.getElementById('progressoContador').textContent = total;
+
+      const revealBtn = document.getElementById('revealBtn');
+      if (total >= 4) {
+        revealBtn.disabled = false;
+        revealBtn.style.background = 'linear-gradient(135deg,#ff6b9d,#c44569)';
+        revealBtn.style.opacity = '1';
+        revealBtn.style.cursor = 'pointer';
+        revealBtn.textContent = '🚀 CLIQUEM AQUI PRA DESCOBRIR!';
+        document.getElementById('progressoAviso').textContent = '🎉 Prontinho! Agora é só clicar no botão abaixo!';
+      }
+    }
+
     // Vote visual feedback (com certo/errado)
     function vote(btn, pollNum, isCorrect) {
       const feedback = document.getElementById(`feedback${pollNum}`);
@@ -199,6 +220,8 @@
         btn.classList.add('certo');
         feedback.textContent = '✅ Acertou! Boa dedução...';
         feedback.className = 'poll-feedback ok';
+        acertadas[pollNum] = true;
+        atualizarProgresso();
       } else {
         // Errou: balança o botão e avisa, mas deixa tentar de novo
         btn.classList.remove('shake');
@@ -212,6 +235,8 @@
 
     // Revelação final
     function reveal() {
+      const total = Object.values(acertadas).filter(Boolean).length;
+      if (total < 4) return; // ainda não respondeu tudo, não faz nada
       document.getElementById('revealBtn').style.display = 'none';
       const final = document.getElementById('finalReveal');
       final.style.display = 'block';
