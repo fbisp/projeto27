@@ -50,6 +50,14 @@
     }
     .poll-btn:hover { background: linear-gradient(135deg, #ff6b9d, #c44569); border-color: transparent; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,107,157,.3); }
     .poll-btn.voted { background: linear-gradient(135deg, #ff6b9d, #c44569); border-color: transparent; }
+    .poll-btn.certo { background: linear-gradient(135deg, #43e97b, #38f9d7); border-color: transparent; color: #0f0f23; font-weight: 700; }
+    .poll-btn.errado { background: rgba(255,80,80,.25); border-color: #ff5050; }
+    .poll-btn:disabled { cursor: default; opacity: .85; }
+    @keyframes shake { 10%,90% { transform: translateX(-2px); } 20%,80% { transform: translateX(4px); } 30%,50%,70% { transform: translateX(-8px); } 40%,60% { transform: translateX(8px); } }
+    .poll-btn.shake { animation: shake .5s; }
+    .poll-feedback { min-height: 1.4rem; margin-top: .75rem; font-weight: 600; font-size: .95rem; }
+    .poll-feedback.ok { color: #43e97b; }
+    .poll-feedback.no { color: #ff8080; }
     .divider { height: 1px; background: linear-gradient(90deg, transparent, #333, transparent); margin: 2rem 0; }
     .final-reveal {
       display: none; text-align: center; padding: 3rem 1rem;
@@ -86,13 +94,14 @@
       <p>A vida do Flávio e da Luciana vai mudar bastante! Os dois estão se organizando juntos para dar prioridade máxima a uma coisa nova que está chegando.</p>
       <div class="clue">Pista: "resolvemos com muito amor" 💗</div>
       <div class="poll">
-        <p class="poll-q">O que acham que mudou na arquitetura?</p>
+        <p class="poll-q">O que acham que mudou na rotina?</p>
         <div class="poll-options" id="poll1">
-          <button class="poll-btn" onclick="vote(this,1)">Nova casa 🏠</button>
-          <button class="poll-btn" onclick="vote(this,1)">Mudança de carreira 💼</button>
-          <button class="poll-btn" onclick="vote(this,1)">Adotaram um pet 🐕</button>
-          <button class="poll-btn" onclick="vote(this,1)">Outro (comentem!) 💬</button>
+          <button class="poll-btn" onclick="vote(this,1,false)">Nova casa 🏠</button>
+          <button class="poll-btn" onclick="vote(this,1,false)">Mudança de carreira 💼</button>
+          <button class="poll-btn" onclick="vote(this,1,false)">Adotaram um pet 🐕</button>
+          <button class="poll-btn" onclick="vote(this,1,true)">Vai chegar alguém novo 👶</button>
         </div>
+        <p class="poll-feedback" id="feedback1"></p>
       </div>
     </section>
 
@@ -102,13 +111,14 @@
       <p>Tem uma novidade sendo preparada desde já. Previsão de chegada: cerca de 40 semanas. Vai precisar de muita fralda, mamadeira e noites sem dormir.</p>
       <div class="clue">Precisa de: muita paciência + amor sem limite<br>Chegada prevista: JANEIRO/27</div>
       <div class="poll">
-        <p class="poll-q">Qual o codinome desse módulo?</p>
+        <p class="poll-q">Qual é o apelido dessa novidade?</p>
         <div class="poll-options" id="poll2">
-          <button class="poll-btn" onclick="vote(this,2)">Projeto Netinho 👴</button>
-          <button class="poll-btn" onclick="vote(this,2)">Operação Cegonha 🦩</button>
-          <button class="poll-btn" onclick="vote(this,2)">Baby Ferreira 👶</button>
-          <button class="poll-btn" onclick="vote(this,2)">Feature Surpresa 🎁</button>
+          <button class="poll-btn" onclick="vote(this,2,false)">Projeto Netinho 👴</button>
+          <button class="poll-btn" onclick="vote(this,2,false)">Operação Cegonha 🦩</button>
+          <button class="poll-btn" onclick="vote(this,2,true)">Baby Ferreira 👶</button>
+          <button class="poll-btn" onclick="vote(this,2,false)">Feature Surpresa 🎁</button>
         </div>
+        <p class="poll-feedback" id="feedback2"></p>
       </div>
     </section>
 
@@ -118,13 +128,14 @@
       <p>Flávio e Luciana estão emocionados o tempo todo, tirando fotos sem parar e já se derretendo de fofura por alguém que ainda nem chegou.</p>
       <div class="clue">Sintoma: olhos brilhando 24 horas por dia</div>
       <div class="poll">
-        <p class="poll-q">Que hardware novo chegou?</p>
+        <p class="poll-q">Por que tanta emoção assim?</p>
         <div class="poll-options" id="poll3">
-          <button class="poll-btn" onclick="vote(this,3)">Carro novo 🚗</button>
-          <button class="poll-btn" onclick="vote(this,3)">Reforma da casa 🛠️</button>
-          <button class="poll-btn" onclick="vote(this,3)">Bebê a bordo 👶</button>
-          <button class="poll-btn" onclick="vote(this,3)">Robô aspirador 🤖</button>
+          <button class="poll-btn" onclick="vote(this,3,false)">Carro novo 🚗</button>
+          <button class="poll-btn" onclick="vote(this,3,false)">Reforma da casa 🛠️</button>
+          <button class="poll-btn" onclick="vote(this,3,true)">Bebê a bordo 👶</button>
+          <button class="poll-btn" onclick="vote(this,3,false)">Robô aspirador 🤖</button>
         </div>
+        <p class="poll-feedback" id="feedback3"></p>
       </div>
     </section>
 
@@ -134,13 +145,14 @@
       <p>Em breve, alguns de vocês vão ganhar um título novo: <code>Titio</code>, <code>Titia</code>, <code>Vovó</code>, <code>Vovô</code>, <code>Dinda</code> ou <code>Dindo</code>. Com direito a colo ilimitado, mimos liberados e foto obrigatória no stories.</p>
       <div class="clue">Regra extra pros vovôs e vovós: podem liberar doce à vontade 🍬</div>
       <div class="poll">
-        <p class="poll-q">Quem ganhou essas permissões VIP?</p>
+        <p class="poll-q">Quem vai ganhar esses títulos novos?</p>
         <div class="poll-options" id="poll4">
-          <button class="poll-btn" onclick="vote(this,4)">Os padrinhos 🎩</button>
-          <button class="poll-btn" onclick="vote(this,4)">Os avós 👴👵</button>
-          <button class="poll-btn" onclick="vote(this,4)">A família toda 👨‍👩‍👧</button>
-          <button class="poll-btn" onclick="vote(this,4)">O doguinho 🐶</button>
+          <button class="poll-btn" onclick="vote(this,4,false)">Os padrinhos 🎩</button>
+          <button class="poll-btn" onclick="vote(this,4,false)">Os avós 👴👵</button>
+          <button class="poll-btn" onclick="vote(this,4,true)">A família toda 👨‍👩‍👧</button>
+          <button class="poll-btn" onclick="vote(this,4,false)">O doguinho 🐶</button>
         </div>
+        <p class="poll-feedback" id="feedback4"></p>
       </div>
     </section>
 
@@ -176,11 +188,26 @@
   </div>
 
   <script>
-    // Vote visual feedback
-    function vote(btn, pollNum) {
-      document.querySelectorAll(`#poll${pollNum} .poll-btn`).forEach(b => b.classList.remove('voted'));
-      btn.classList.add('voted');
-      btn.textContent = '✅ ' + btn.textContent.replace('✅ ', '');
+    // Vote visual feedback (com certo/errado)
+    function vote(btn, pollNum, isCorrect) {
+      const feedback = document.getElementById(`feedback${pollNum}`);
+
+      if (isCorrect) {
+        // Acertou: trava as opções e destaca a certa
+        document.querySelectorAll(`#poll${pollNum} .poll-btn`).forEach(b => b.disabled = true);
+        btn.classList.remove('errado');
+        btn.classList.add('certo');
+        feedback.textContent = '✅ Acertou! Boa dedução...';
+        feedback.className = 'poll-feedback ok';
+      } else {
+        // Errou: balança o botão e avisa, mas deixa tentar de novo
+        btn.classList.remove('shake');
+        void btn.offsetWidth; // reinicia a animação se clicar de novo rápido
+        btn.classList.add('errado', 'shake');
+        feedback.textContent = '❌ Errou! Tenta outra vez 😅';
+        feedback.className = 'poll-feedback no';
+        setTimeout(() => btn.classList.remove('shake'), 500);
+      }
     }
 
     // Revelação final
